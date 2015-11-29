@@ -1,0 +1,15 @@
+{
+	"name": "hacker-news",
+	"version": "0.1.0",
+	"bin": {
+		"hn": "./bin/hacker-news"
+	},
+	"dependencies": {
+		"is": "rgrannell1/is",
+		"docopt": ">=0.6.2"
+	},
+	"license": "MIT",
+	"engines": {
+		"node": ">=5.0.0"
+	}
+}
