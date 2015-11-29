@@ -1,8 +1,8 @@
 {
-	"name": "hacker-news",
+	"name": "hacker-terms",
 	"version": "0.1.0",
 	"bin": {
-		"hn": "./bin/hacker-news"
+		"ht": "./bin/hacker-terms"
 	},
 	"dependencies": {
 		"is": "rgrannell1/is",
