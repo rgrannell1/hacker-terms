@@ -34,13 +34,13 @@ Options:
 
 
 
-foldStdin <- function (callback, acc) {
+foldStdin <- function (onLine, acc) {
 
 	conn <- file('stdin')
 	open(conn, blocking = TRUE)
 
 	while(length( line <- readLines(conn, n = 1) ) > 0) {
-		acc <- callback(acc, line)
+		acc <- onLine(acc, line)
 	}
 
 	acc
