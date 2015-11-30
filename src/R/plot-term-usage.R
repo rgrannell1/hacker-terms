@@ -95,13 +95,23 @@ foldStdin <- (onLine : acc) := {
 
 plotFrequency <- (args : data) := {
 
-	print( data )
+	df <- x_(data)  $
+		xMap(group := {
 
-	df <- data.frame( )
+			c(
+				group $ termAverages,
+				timeLabel    = group $ timeLabel,
+				observations = group $ observations
+			)
 
-	x_(data) $ xFold((df : row) := {
+		}) $
+		x_Apply(rbind)
 
-	}, data.frame( ))
+
+
+
+
+	print(df)
 
 	ggplot(df) + geom_line( )
 
