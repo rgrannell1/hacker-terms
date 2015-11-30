@@ -8,6 +8,10 @@ if (!require(devtools)) {
 	install.packages(devtools)
 }
 
+if (!require(ggplot2)) {
+	install.packages(ggplot2)
+}
+
 if (!require(docopt)) {
 	library(devtools)
 	install_github("docopt/docopt.R")
@@ -53,7 +57,7 @@ readRecordFormat = (buffer : line) := {
 	keyPath <- xExplode('[.]', xFirstOf(tokens))
 	val     <- xSecondOf(tokens)
 
-	# -- add step to update buffer.
+	# -- this is unpleasant.
 
 	if (xLenOf(keyPath) == 1) {
 
@@ -65,7 +69,7 @@ readRecordFormat = (buffer : line) := {
 
 	}
 
-	print(buffer)
+	buffer
 
 }
 
@@ -89,11 +93,19 @@ foldStdin <- (onLine : acc) := {
 
 
 
+plotFrequency <- (args : data) := {
+
+
+
+}
+
+
+
+
 
 main <- args := {
 
 	data <- foldStdin((acc : line) := {
-
 
 		if (xIsMatch('^[ 	]*$', line)) {
 
@@ -115,6 +127,8 @@ main <- args := {
 		buffer = list( ),
 		data   = list( )
 	))
+
+	plotFrequency(args, data $ data)
 
 }
 
