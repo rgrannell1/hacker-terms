@@ -17,6 +17,10 @@ if (!require(docopt)) {
 	install_github("docopt/docopt.R")
 }
 
+if (!require(reshape2)) {
+	install.packages(reshape2)
+}
+
 if (!require(kea)) {
 	library(devtools)
 	install_github("rgrannell1/kea")
@@ -107,13 +111,12 @@ plotFrequency <- (args : data) := {
 		}) $
 		x_Apply(rbind)
 
+	melted <- melt(
+		as.data.frame(df),
+		id.vars = x_(colnames(df)) $ xReverse( ) $ xDrop(1) $ xReverse( ) $ x_AsCharacter( )
+	)
 
-
-
-
-	print(df)
-
-	ggplot(df) + geom_line( )
+	ggplot(melted) + geom_line( )
 
 }
 
