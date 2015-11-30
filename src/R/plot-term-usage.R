@@ -21,6 +21,10 @@ if (!require(reshape2)) {
 	install.packages(reshape2)
 }
 
+if (!require(scales)) {
+	install.packages(scales)
+}
+
 if (!require(kea)) {
 	library(devtools)
 	install_github("rgrannell1/kea")
@@ -138,8 +142,13 @@ plotFrequency <- (args : data) := {
 	gg <- ggplot(melted) +
 		geom_line( aes(x = timeLabel, y = value, color = variable) ) +
 
+		scale_x_continuous(labels = point := {
+			floor(point)
+		}) +
+		scale_y_continuous(labels = percent) +
+
 		xlab('') +
-		ylab('frequency (% usage)') +
+		ylab('term frequency') +
 
 		ggtitle('HN term usage over time.')
 
