@@ -34,6 +34,19 @@ Options:
 
 
 
+tryParseNumber <- number := {
+
+	tryCatch({
+		as.numeric(number)
+	},
+	error = xK(number))
+
+}
+
+
+
+
+
 readRecordFormat = (buffer : line) := {
 
 	tokens  <- xExplode('[ ]+', line)
@@ -44,13 +57,15 @@ readRecordFormat = (buffer : line) := {
 
 	if (xLenOf(keyPath) == 1) {
 
-		buffer[[keyPath]] <- val
+		buffer[[keyPath]] <- tryParseNumber(val)
 
 	} else if (xLenOf(keyPath) == 2) {
 
-		buffer[[ xFirstOf(keyPath) ]][[ xSecondOf(keyPath) ]] <- val
+		buffer[[ xFirstOf(keyPath) ]][[ xSecondOf(keyPath) ]] <- tryParseNumber(val)
 
 	}
+
+	print(buffer)
 
 }
 
