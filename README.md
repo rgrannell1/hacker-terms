@@ -1,5 +1,5 @@
 
-# hacker-terms
+# Hacker-Terms
 
 Hacker terms is a basic term-usage analyser for data from [hacker-news archiver](https://hn-archive.appspot.com/). You can
 retrieve this data using the following link*:
@@ -17,15 +17,21 @@ This project consists of analysis and plotting scripts:
 These need to piped together as shown below to produce an output graph.
 
 ```bash
-< data/10m_hn_comments_sorted.json node bin/hacker-terms.js freq -y -- nodejs | Rscript src/R/plot-term-usage.R - > images/nodejs.png
+< data/10m_hn_comments_sorted.json node bin/hacker-terms.js freq --year -- nodejs | Rscript src/R/plot-term-usage.R - > images/nodejs.png
 ```
 
 ## Example Output
 
-![Usage of Disruptive](disruptive.png)
+![Usage of 'Disrupt'](examples/disrupt.png)
+
+![Usage of 'Nodejs' or 'Node'](examples/nodejs.png)
+
+![Usage of 'Docker'](examples/docker.png)
 
 ## Weaknesses
 
-- This tool does not allow terms to be grouped at the moment.
+- Terms with similar meanings ( node, node.js, nodejs for example) cannot be grouped under a common name.
 
-** for some reason github doesn't properly support markdown for magnet links.
+- R doesn't seem to allow plots to be written to `stdout` directly, so as a hack images are written to a temporary file before being printed to `stdout`.
+
+\* for some reason github doesn't properly support markdown for magnet links.
