@@ -142,9 +142,7 @@ plotFrequency <- (args : data) := {
 	gg <- ggplot(melted) +
 		geom_line( aes(x = timeLabel, y = value, color = variable) ) +
 
-		scale_x_continuous(labels = point := {
-			floor(point)
-		}) +
+		scale_x_continuous(labels = floor) +
 		scale_y_continuous(labels = percent) +
 
 		xlab('') +
