@@ -95,7 +95,39 @@ foldStdin <- (onLine : acc) := {
 
 plotFrequency <- (args : data) := {
 
+	print( data )
 
+	df <- data.frame( )
+
+	x_(data) $ xFold((df : row) := {
+
+	}, data.frame( ))
+
+	ggplot(df) + geom_line( )
+
+}
+
+
+
+
+
+parseLines <- (acc : line) := {
+
+	if (xIsMatch('^[ 	]*$', line)) {
+
+		list(
+			buffer = list( ),
+			data   = xJoin_(acc $ data, list(acc $ buffer))
+		)
+
+	} else {
+
+		list(
+			buffer = readRecordFormat(acc $ buffer, line),
+			data   = acc $ data
+		)
+
+	}
 
 }
 
@@ -105,30 +137,14 @@ plotFrequency <- (args : data) := {
 
 main <- args := {
 
-	data <- foldStdin((acc : line) := {
-
-		if (xIsMatch('^[ 	]*$', line)) {
-
-			list(
-				buffer = list( ),
-				data   = xJoin_(acc $ data, acc $ buffer)
-			)
-
-		} else {
-
-			list(
-				buffer = readRecordFormat(acc $ buffer, line),
-				data   = acc $ data
-			)
-
-		}
-
-	}, list(
+	data <- foldStdin(parseLines, list(
 		buffer = list( ),
 		data   = list( )
-	))
+	)) $ data
 
-	plotFrequency(args, data $ data)
+	plotFrequency(args, xSelect(row := {
+		xLenOf(row) > 0
+	}, data))
 
 }
 
