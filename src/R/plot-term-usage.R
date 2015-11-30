@@ -13,6 +13,11 @@ if (!require(docopt)) {
 	install_github("docopt/docopt.R")
 }
 
+if (!require(kea)) {
+	library(devtools)
+	install_github("rgrannell1/kea")
+}
+
 
 
 
@@ -29,6 +34,21 @@ Usage:
 Options:
 
 ' -> doc
+
+
+
+
+readRecordFormat = function (buffer, line) {
+
+	tokens  <- xExplode('[ ]+', line)
+	keyPath <- xExplode('[.]', xFirstOf(tokens))
+	val     <- xSecondOf(tokens)
+
+	# -- add step to update buffer.
+
+	buffer
+
+}
 
 
 
@@ -55,9 +75,27 @@ main <- function (args) {
 
 	data <- foldStdin(function (acc, line) {
 
-		print(line)
 
-	}, list( ))
+		if (xIsMatch('^[ 	]*$', line)) {
+
+			list(
+				buffer = list( ),
+				data   = xJoin_(acc $ data, acc $ buffer)
+			)
+
+		} else {
+
+			list(
+				buffer = readRecordFormat(acc $ buffer, line),
+				data   = acc $ data
+			)
+
+		}
+
+	}, list(
+		buffer = list( ),
+		data   = list( )
+	))
 
 }
 
