@@ -1,6 +1,8 @@
 
 data/*
 node_modules/*
+images/*
+
 !node_modules/hacker-terms
 npm-debug.log
 Rplots.pdf

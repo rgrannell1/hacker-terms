@@ -90,6 +90,7 @@ foldStdin <- (onLine : acc) := {
 		acc <- onLine(acc, line)
 	}
 
+	close(conn)
 	acc
 
 }
@@ -97,9 +98,27 @@ foldStdin <- (onLine : acc) := {
 
 
 
+writePlot <- gg := {
+
+	# -- because R plots doesn't seem to support stdout (ffs).
+
+	file <- tempfile('ptu-')
+
+	png(file)
+		plot(gg)
+	dev.off( )
+
+	system(paste0('cat ', file))
+
+}
+
+
+
+
+
 plotFrequency <- (args : data) := {
 
-	df <- x_(data)  $
+	aggregate <- x_(data)  $
 		xMap(group := {
 
 			c(
@@ -112,11 +131,19 @@ plotFrequency <- (args : data) := {
 		x_Apply(rbind)
 
 	melted <- melt(
-		as.data.frame(df),
-		id.vars = x_(colnames(df)) $ xReverse( ) $ xDrop(1) $ xReverse( ) $ x_AsCharacter( )
+		as.data.frame(aggregate, stringsAsFactors = False),
+		id.vars = c('timeLabel', 'observations')
 	)
 
-	ggplot(melted) + geom_line( )
+	gg <- ggplot(melted) +
+		geom_line( aes(x = timeLabel, y = value, color = variable) ) +
+
+		xlab('') +
+		ylab('frequency (% usage)') +
+
+		ggtitle('HN term usage over time.')
+
+	writePlot(gg)
 
 }
 
