@@ -22,11 +22,6 @@ if (!require(kea)) {
 
 
 
-library(docopt)
-
-
-
-
 '
 Usage:
 	plot-term-usage.R [--] -
@@ -38,7 +33,8 @@ Options:
 
 
 
-readRecordFormat = function (buffer, line) {
+
+readRecordFormat = (buffer : line) := {
 
 	tokens  <- xExplode('[ ]+', line)
 	keyPath <- xExplode('[.]', xFirstOf(tokens))
@@ -46,7 +42,15 @@ readRecordFormat = function (buffer, line) {
 
 	# -- add step to update buffer.
 
-	buffer
+	if (xLenOf(keyPath) == 1) {
+
+		buffer[[keyPath]] <- val
+
+	} else if (xLenOf(keyPath) == 2) {
+
+		buffer[[ xFirstOf(keyPath) ]][[ xSecondOf(keyPath) ]] <- val
+
+	}
 
 }
 
@@ -54,10 +58,10 @@ readRecordFormat = function (buffer, line) {
 
 
 
-foldStdin <- function (onLine, acc) {
+foldStdin <- (onLine : acc) := {
 
 	conn <- file('stdin')
-	open(conn, blocking = TRUE)
+	open(conn, blocking = True)
 
 	while(length( line <- readLines(conn, n = 1) ) > 0) {
 		acc <- onLine(acc, line)
@@ -71,9 +75,9 @@ foldStdin <- function (onLine, acc) {
 
 
 
-main <- function (args) {
+main <- args := {
 
-	data <- foldStdin(function (acc, line) {
+	data <- foldStdin((acc : line) := {
 
 
 		if (xIsMatch('^[ 	]*$', line)) {
